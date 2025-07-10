@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tokokaret - Pusat Karet Otomotif & Industri</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="assets/Tokokaret favicon.ico">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        /* Custom Styles */
+        :root {
+            --green-primary: #10B981;
+            --yellow-accent: #F59E0B;
+            --text-dark: #111827;
+            --text-light: #4B5563;
+            --bg-light: #F9FAFB;
+            --bg-section: #FFFFFF;
+        }
+
+        /* Lenis requires this for smooth scrolling */
+        html.lenis {
+            height: auto;
+        }
+        .lenis.lenis-smooth {
+            scroll-behavior: auto !important;
+        }
+        .lenis.lenis-stopped {
+            overflow: hidden;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+        }
+        
+        /* Header scroll effect */
+        .header-scrolled {
+            background-color: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            border-bottom-color: transparent;
+        }
+        
+        /* Custom Navbar Indicator */
+        .nav-link {
+            position: relative;
+            padding-bottom: 8px;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--green-primary);
+            transform: scaleX(0);
+            transform-origin: center;
+            transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+        .nav-link.active::after {
+            transform: scaleX(1);
+        }
+
+
+        /* Animation for elements fading in on scroll */
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 1.2s cubic-bezier(0.165, 0.84, 0.44, 1), transform 1.2s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Hero Section Styling */
+        #hero {
+            background-image: linear-gradient(rgba(249, 250, 251, 0.85), rgba(249, 250, 251, 0.85)), url('assets/bgkaret.jpeg');
+            background-size: cover;
+            background-position: center;
+        }
+
+        #hero-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .card-hover {
+            transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), box-shadow 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        .card-hover:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+        }
+        
+        /* Blinking cursor for typing animation */
+        .is-typing::after {
+            content: '|';
+            display: inline;
+            animation: blink-caret 1s step-end infinite;
+        }
+
+        @keyframes blink-caret {
+            from, to { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        
+        /* Scroll-telling section styles */
+        .scroll-feature-item {
+            transition: opacity 0.5s ease-in-out;
+        }
+        .scroll-feature-item.active {
+            opacity: 1;
+        }
+        .scroll-feature-item:not(.active) {
+            opacity: 0.4;
+        }
+        
+        .feature-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            transition: opacity 0.6s ease-in-out, transform 0.6s ease-in-out;
+            transform: scale(0.95);
+            opacity: 0;
+        }
+        .feature-image.active {
+            transform: scale(1);
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Header -->
+    <header id="main-header" class="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-lg border-b border-gray-200/0 transition-all duration-300">
+        <div class="container mx-auto px-6 py-3 flex justify-between items-center transition-all duration-300">
+            <a href="#" class="flex items-center space-x-3">
+                <img src="assets/Tokokaret Logo Transparent.png" alt="Tokokaret Logo" class="h-12">
+                <h1 class="text-2xl font-bold text-gray-800 hidden sm:block">Tokokaret</h1>
+            </a>
+            <nav id="main-nav" class="hidden md:flex space-x-10">
+                <a href="#features" data-section-id="features" class="nav-link text-gray-600 hover:text-green-600 font-semibold transition-colors">Keunggulan</a>
+                <a href="#products" data-section-id="products" class="nav-link text-gray-600 hover:text-green-600 font-semibold transition-colors">Produk</a>
+                <a href="#testimonials" data-section-id="testimonials" class="nav-link text-gray-600 hover:text-green-600 font-semibold transition-colors">Testimoni</a>
+                <a href="#cta" data-section-id="cta" class="nav-link text-gray-600 hover:text-green-600 font-semibold transition-colors">Toko Online</a>
+            </nav>
+            <a href="https://wa.me/6281234567890" target="_blank" class="bg-yellow-400 text-gray-900 font-bold py-3 px-6 rounded-xl hover:bg-yellow-500 transition-all duration-300 hidden md:inline-block transform hover:scale-105">
+                Hubungi Kami
+            </a>
+            <button id="menu-btn" class="md:hidden focus:outline-none">
+                <i class="fas fa-bars text-3xl text-gray-800"></i>
+            </button>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-200">
+             <a href="#features" class="block py-3 px-6 text-base text-gray-700 hover:bg-gray-100">Keunggulan</a>
+             <a href="#products" class="block py-3 px-6 text-base text-gray-700 hover:bg-gray-100">Produk</a>
+             <a href="#testimonials" class="block py-3 px-6 text-base text-gray-700 hover:bg-gray-100">Testimoni</a>
+             <a href="#cta" class="block py-3 px-6 text-base text-gray-700 hover:bg-gray-100">Toko Online</a>
+             <a href="https://wa.me/6281234567890" target="_blank" class="block py-3 px-6 text-base text-gray-700 hover:bg-gray-100">Hubungi Kami</a>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="hero" data-section="hero" class="min-h-screen flex items-center justify-center text-center pt-20 relative overflow-hidden">
+            <canvas id="hero-canvas"></canvas>
+            <div class="hero-content container mx-auto px-6">
+                <h2 class="text-4xl md:text-7xl font-extrabold text-gray-900 leading-tight mb-5 max-w-4xl mx-auto">
+                    <span class="typing-effect"></span>
+                </h2>
+                <p class="text-lg md:text-xl text-gray-700 max-w-3xl mx-auto mb-10 reveal" style="transition-delay: 100ms;">Solusi lengkap untuk semua kebutuhan karet kendaraan Anda, dari part original hingga custom.</p>
+                <a href="#products" class="bg-green-600 text-white font-bold py-4 px-10 rounded-xl text-lg hover:bg-green-700 transition-all duration-300 inline-block transform hover:scale-105 reveal" style="transition-delay: 200ms;">
+                    Lihat Produk Kami
+                </a>
+            </div>
+        </section>
+
+        <!-- Features Section (Scroll-Telling) -->
+        <section id="features" data-section="features" class="py-24 md:py-32 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16 md:mb-24">
+                     <h3 class="text-4xl md:text-5xl font-bold text-gray-900 reveal">Kualitas Tanpa Kompromi</h3>
+                     <p class="text-lg text-gray-600 mt-4 max-w-2xl mx-auto reveal" style="transition-delay: 150ms;">Inilah yang membuat kami menjadi pilihan utama.</p>
+                </div>
+                
+                <div class="md:grid md:grid-cols-2 md:gap-24 items-start">
+                    <!-- Sticky Visuals Column -->
+                    <div class="md:sticky top-24 h-80 md:h-96 w-full">
+                        <div class="relative w-full h-full">
+                            <!-- Images are positioned absolutely within this relative container -->
+                            <img id="feature-image-1" src="https://placehold.co/600x600/e0f2f1/10b981?text=Kualitas+Terbaik" alt="Kualitas Bagus" class="feature-image rounded-3xl">
+                            <img id="feature-image-2" src="https://placehold.co/600x600/e0f2f1/10b981?text=Presisi+100%25" alt="Ukuran Sesuai" class="feature-image rounded-3xl">
+                            <img id="feature-image-3" src="https://placehold.co/600x600/fef3c7/f59e0b?text=Harga+Ekonomis" alt="Harga Terbaik" class="feature-image rounded-3xl">
+                        </div>
+                    </div>
+                    <!-- Scrolling Text Column -->
+                    <div class="mt-16 md:mt-0 space-y-32 md:space-y-48">
+                        <!-- Feature 1 -->
+                        <div class="scroll-feature-item" data-feature="1">
+                            <div class="text-green-600 text-4xl mb-4"><i class="fas fa-medal"></i></div>
+                            <h4 class="text-3xl font-bold text-gray-900 mb-3">Material Berkualitas</h4>
+                            <p class="text-gray-600 text-lg leading-relaxed">Kami hanya menggunakan bahan baku pilihan yang telah teruji ketahanannya. Setiap produk dirancang untuk performa maksimal dan usia pakai yang panjang, melebihi standar industri.</p>
+                        </div>
+                        <!-- Feature 2 -->
+                        <div class="scroll-feature-item" data-feature="2">
+                            <div class="text-green-600 text-4xl mb-4"><i class="fas fa-ruler-combined"></i></div>
+                            <h4 class="text-3xl font-bold text-gray-900 mb-3">Presisi Sempurna</h4>
+                            <p class="text-gray-600 text-lg leading-relaxed">Dengan teknologi cetak modern, kami menjamin setiap produk memiliki ukuran dan bentuk yang 100% akurat sesuai part original. Pemasangan menjadi lebih mudah, cepat, dan pas.</p>
+                        </div>
+                        <!-- Feature 3 -->
+                        <div class="scroll-feature-item" data-feature="3">
+                             <div class="text-yellow-500 text-4xl mb-4"><i class="fas fa-tags"></i></div>
+                            <h4 class="text-3xl font-bold text-gray-900 mb-3">Harga Paling Kompetitif</h4>
+                            <p class="text-gray-600 text-lg leading-relaxed">Kualitas premium tidak harus mahal. Kami menawarkan harga terbaik di kelasnya, memberikan Anda nilai lebih untuk setiap pembelian part pengganti.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Products Section -->
+        <section id="products" data-section="products" class="py-24 md:py-32 bg-gray-50">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h3 class="text-4xl md:text-5xl font-bold text-gray-900 reveal">Jelajahi Produk Unggulan Kami</h3>
+                    <p class="text-lg text-gray-600 mt-4 max-w-2xl mx-auto reveal" style="transition-delay: 150ms;">Dari karet pintu hingga klip, temukan semua yang Anda butuhkan.</p>
+                </div>
+                <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <!-- Product Cards -->
+                    <div class="bg-white rounded-2xl overflow-hidden reveal card-hover border border-gray-200/80">
+                        <img src="assets/Karet Pintu.png" alt="Karet Pintu dan Kaca" class="w-full h-56 object-cover">
+                        <div class="p-6">
+                            <h4 class="text-xl font-bold text-gray-900">Karet Pintu & Kaca</h4>
+                            <p class="text-gray-600 mt-2">Aneka karet pintu, kaca, bagasi mobil, hingga pintu kontainer.</p>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-2xl overflow-hidden reveal card-hover border border-gray-200/80" style="transition-delay: 200ms;">
+                        <img src="assets/Karpet.png" alt="Karpet Karet Mobil" class="w-full h-56 object-cover">
+                        <div class="p-6">
+                            <h4 class="text-xl font-bold text-gray-900">Karpet Karet Mobil</h4>
+                            <p class="text-gray-600 mt-2">Berbagai jenis karpet karet universal untuk lantai mobil dan roda.</p>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-2xl overflow-hidden reveal card-hover border border-gray-200/80" style="transition-delay: 400ms;">
+                        <img src="assets/Klip.png" alt="Klip dan Kancingan" class="w-full h-56 object-cover">
+                        <div class="p-6">
+                            <h4 class="text-xl font-bold text-gray-900">Klip & Kancingan</h4>
+                            <p class="text-gray-600 mt-2">Aneka klip untuk doortrim, hardboard, penahan pintu, dan kap mesin.</p>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-2xl overflow-hidden reveal card-hover border border-gray-200/80" style="transition-delay: 600ms;">
+                        <img src="assets/Karet kedap sint 2.jpeg" alt="Karet Kedap Spon" class="w-full h-56 object-cover">
+                        <div class="p-6">
+                            <h4 class="text-xl font-bold text-gray-900">Karet Kedap Spon</h4>
+                            <p class="text-gray-600 mt-2">Karet kedap spon untuk kapal, alam, dan sintetis dalam berbagai ukuran.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials Section -->
+        <section id="testimonials" data-section="testimonials" class="py-24 md:py-32 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h3 class="text-4xl md:text-5xl font-bold text-gray-900 reveal">Apa Kata Pelanggan Kami</h3>
+                    <p class="text-lg text-gray-600 mt-4 max-w-2xl mx-auto reveal" style="transition-delay: 150ms;">Kepuasan Anda adalah prioritas utama kami. Lihat apa yang mereka katakan.</p>
+                </div>
+                <div class="grid md:grid-cols-3 gap-8">
+                    <!-- Testimonial 1 -->
+                    <div class="bg-gray-50 p-8 rounded-2xl reveal card-hover border border-gray-200/80">
+                        <div class="flex items-center mb-4">
+                            <div class="text-yellow-400">
+                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 mb-6">"Kualitas karetnya mantap, pas dipasang di mobil Avanza saya. Pengiriman juga cepat. Recommended seller!"</p>
+                        <div class="flex items-center">
+                            <img src="https://placehold.co/40x40/2ecc71/ffffff?text=T" alt="Tokopedia" class="w-8 h-8 rounded-full mr-3">
+                            <div>
+                                <p class="font-bold text-gray-800">Budi Santoso</p>
+                                <p class="text-sm text-gray-500">Pembeli di Tokopedia</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Testimonial 2 -->
+                    <div class="bg-gray-50 p-8 rounded-2xl reveal card-hover border border-gray-200/80" style="transition-delay: 200ms;">
+                        <div class="flex items-center mb-4">
+                            <div class="text-yellow-400">
+                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 mb-6">"Barangnya sesuai deskripsi, presisi banget. Gak nyesel beli di sini. Harganya juga oke."</p>
+                        <div class="flex items-center">
+                            <img src="https://placehold.co/40x40/ee4d2d/ffffff?text=S" alt="Shopee" class="w-8 h-8 rounded-full mr-3">
+                            <div>
+                                <p class="font-bold text-gray-800">Citra Lestari</p>
+                                <p class="text-sm text-gray-500">Pembeli di Shopee</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Testimonial 3 -->
+                    <div class="bg-gray-50 p-8 rounded-2xl reveal card-hover border border-gray-200/80" style="transition-delay: 400ms;">
+                        <div class="flex items-center mb-4">
+                            <div class="text-yellow-400">
+                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 mb-6">"Pelayanan ramah dan responsif. Konsultasi dulu sebelum beli, dibantu banget. Kualitas produknya top!"</p>
+                        <div class="flex items-center">
+                            <img src="https://placehold.co/40x40/000000/ffffff?text=TS" alt="Tiktok Shop" class="w-8 h-8 rounded-full mr-3">
+                            <div>
+                                <p class="font-bold text-gray-800">Ahmad Yani</p>
+                                <p class="text-sm text-gray-500">Pembeli di Tiktok Shop</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section id="cta" data-section="cta" class="py-24 md:py-32 bg-gray-50">
+            <div class="container mx-auto px-6 text-center">
+                <h3 class="text-4xl md:text-5xl font-bold text-gray-900 reveal">Siap Untuk Membeli?</h3>
+                <p class="text-lg text-gray-600 mt-4 mb-10 max-w-2xl mx-auto reveal" style="transition-delay: 150ms;">Kunjungi toko kami di marketplace favorit Anda untuk belanja yang mudah, aman, dan cepat.</p>
+                <div class="flex flex-wrap justify-center items-center gap-8 reveal" style="transition-delay: 300ms;">
+                    <a href="https://www.tokopedia.com/pukamobil" target="_blank" class="transition-transform hover:scale-110"><img src="https://placehold.co/150x50/2ecc71/ffffff?text=Tokopedia" alt="Tokopedia" class="h-12"></a>
+                    <a href="https://shopee.co.id/pukamobil" target="_blank" class="transition-transform hover:scale-110"><img src="https://placehold.co/150x50/ee4d2d/ffffff?text=Shopee" alt="Shopee" class="h-12"></a>
+                    <a href="https://vt.tiktok.com/ZSB5CK66T/?page=Mall" target="_blank" class="transition-transform hover:scale-110"><img src="https://placehold.co/150x50/000000/ffffff?text=Tiktok+Shop" alt="Tiktok Shop" class="h-12"></a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-gray-200">
+        <div class="container mx-auto px-6 py-10 text-center">
+            <div class="flex justify-center items-center space-x-3 mb-4">
+                 <img src="assets/Tokokaret Logo Transparent.png" alt="Tokokaret Logo" class="h-10">
+                 <h1 class="text-xl font-bold text-gray-800">Tokokaret</h1>
+            </div>
+            <div class="flex justify-center space-x-6 mb-6">
+                <a href="https://wa.me/6281234567890" target="_blank" class="text-gray-500 hover:text-green-600 text-2xl transition-colors"><i class="fab fa-whatsapp"></i></a>
+                <a href="#" class="text-gray-500 hover:text-green-600 text-2xl transition-colors"><i class="fab fa-instagram"></i></a>
+            </div>
+            <p class="text-gray-500 text-sm">&copy; 2024 Tokokaret. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Lenis Smooth Scroll Library -->
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            // --- Lenis Smooth Scroll Initialization ---
+            const lenis = new Lenis();
+            function raf(time) {
+                lenis.raf(time);
+                requestAnimationFrame(raf);
+            }
+            requestAnimationFrame(raf);
+
+            // --- Header & Menu ---
+            const header = document.getElementById('main-header');
+            const menuBtn = document.getElementById('menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            menuBtn.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+            window.addEventListener('scroll', () => {
+                header.classList.toggle('header-scrolled', window.scrollY > 50);
+            });
+
+            // --- General Reveal Animation ---
+            const revealElements = document.querySelectorAll('.reveal');
+            const revealObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        revealObserver.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+            revealElements.forEach(el => revealObserver.observe(el));
+
+            // --- Typewriter Effect ---
+            const typewriterSpan = document.querySelector('.typing-effect');
+            if (typewriterSpan) {
+                const textToType = "Pusat Karet Otomotif & Industri";
+                let i = 0;
+                function type() {
+                    if (i < textToType.length) {
+                        typewriterSpan.textContent += textToType.charAt(i);
+                        i++;
+                        setTimeout(type, 70);
+                    } else {
+                        typewriterSpan.classList.remove('is-typing');
+                    }
+                }
+                setTimeout(() => {
+                    typewriterSpan.classList.add('is-typing');
+                    type();
+                }, 500);
+            }
+
+            // --- Active Navbar Link on Scroll ---
+            const sections = document.querySelectorAll('section[data-section]');
+            const navLinks = document.querySelectorAll('#main-nav a.nav-link');
+            const navObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const sectionId = entry.target.getAttribute('id');
+                        navLinks.forEach(link => {
+                            link.classList.toggle('active', link.getAttribute('href') === `#${sectionId}`);
+                        });
+                    }
+                });
+            }, { rootMargin: '-50% 0px -50% 0px' });
+            sections.forEach(section => navObserver.observe(section));
+
+
+            // --- Scroll-telling for Features Section ---
+            const featureItems = document.querySelectorAll('.scroll-feature-item');
+            const featureImages = {
+                1: document.getElementById('feature-image-1'),
+                2: document.getElementById('feature-image-2'),
+                3: document.getElementById('feature-image-3'),
+            };
+
+            const featureObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const featureNum = entry.target.dataset.feature;
+                        featureItems.forEach(item => {
+                            item.classList.toggle('active', item === entry.target);
+                        });
+                        Object.keys(featureImages).forEach(key => {
+                            featureImages[key].classList.toggle('active', key === featureNum);
+                        });
+                    }
+                });
+            }, { threshold: 0.6, rootMargin: "-150px 0px -150px 0px" });
+
+            if (window.innerWidth < 768) {
+                featureItems.forEach(item => item.classList.add('active'));
+                 Object.values(featureImages).forEach(img => {
+                    img.style.position = 'relative';
+                    img.style.opacity = '1';
+                    img.style.transform = 'scale(1)';
+                    img.classList.remove('feature-image');
+                 });
+                 document.querySelector('.md\\:sticky').style.display = 'none';
+            } else {
+                 featureItems.forEach(item => featureObserver.observe(item));
+            }
+
+            // --- Hero Canvas Animation ---
+            const canvas = document.getElementById('hero-canvas');
+            const ctx = canvas.getContext('2d');
+            let particlesArray;
+
+            function setCanvasSize() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            setCanvasSize();
+
+            class Particle {
+                constructor(x, y, directionX, directionY, size, color) {
+                    this.x = x; this.y = y; this.directionX = directionX; this.directionY = directionY; this.size = size; this.color = color;
+                }
+                draw() {
+                    ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false); ctx.fillStyle = this.color; ctx.fill();
+                }
+                update() {
+                    if (this.x > canvas.width || this.x < 0) { this.directionX = -this.directionX; }
+                    if (this.y > canvas.height || this.y < 0) { this.directionY = -this.directionY; }
+                    this.x += this.directionX; this.y += this.directionY; this.draw();
+                }
+            }
+
+            function init() {
+                particlesArray = [];
+                let numberOfParticles = (canvas.height * canvas.width) / 9000;
+                for (let i = 0; i < numberOfParticles; i++) {
+                    let size = (Math.random() * 2) + 1;
+                    let x = (Math.random() * ((innerWidth - size * 2) - (size * 2)) + size * 2);
+                    let y = (Math.random() * ((innerHeight - size * 2) - (size * 2)) + size * 2);
+                    let directionX = (Math.random() * .4) - .2;
+                    let directionY = (Math.random() * .4) - .2;
+                    let color = Math.random() > 0.2 ? 'rgba(16, 185, 129, 0.8)' : 'rgba(245, 158, 11, 0.8)';
+                    particlesArray.push(new Particle(x, y, directionX, directionY, size, color));
+                }
+            }
+
+            function connect() {
+                let opacityValue = 1;
+                for (let a = 0; a < particlesArray.length; a++) {
+                    for (let b = a; b < particlesArray.length; b++) {
+                        let distance = ((particlesArray[a].x - particlesArray[b].x) * (particlesArray[a].x - particlesArray[b].x)) + ((particlesArray[a].y - particlesArray[b].y) * (particlesArray[a].y - particlesArray[b].y));
+                        if (distance < (canvas.width / 7) * (canvas.height / 7)) {
+                            opacityValue = 1 - (distance / 20000);
+                            ctx.strokeStyle = `rgba(16, 185, 129, ${opacityValue})`;
+                            ctx.lineWidth = 0.5;
+                            ctx.beginPath(); ctx.moveTo(particlesArray[a].x, particlesArray[a].y); ctx.lineTo(particlesArray[b].x, particlesArray[b].y); ctx.stroke();
+                        }
+                    }
+                }
+            }
+
+            function animate() {
+                requestAnimationFrame(animate);
+                ctx.clearRect(0, 0, innerWidth, innerHeight);
+                for (let i = 0; i < particlesArray.length; i++) {
+                    particlesArray[i].update();
+                }
+                connect();
+            }
+
+            window.addEventListener('resize', function() {
+                setCanvasSize();
+                init();
+            });
+
+            init();
+            animate();
+        });
+    </script>
+</body>
+</html>
