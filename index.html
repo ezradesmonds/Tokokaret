@@ -156,6 +156,27 @@
             transform: scale(1);
             opacity: 1;
         }
+        
+        /* Gemini AI Assistant Loader */
+        .loader {
+            width: 48px;
+            height: 48px;
+            border: 5px solid #10B981;
+            border-bottom-color: transparent;
+            border-radius: 50%;
+            display: inline-block;
+            box-sizing: border-box;
+            animation: rotation 1s linear infinite;
+        }
+
+        @keyframes rotation {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
     </style>
 </head>
 <body class="antialiased">
@@ -170,6 +191,7 @@
             <nav id="main-nav" class="hidden md:flex space-x-10">
                 <a href="#features" data-section-id="features" class="nav-link text-gray-600 hover:text-green-600 font-semibold transition-colors">Keunggulan</a>
                 <a href="#products" data-section-id="products" class="nav-link text-gray-600 hover:text-green-600 font-semibold transition-colors">Produk</a>
+                <a href="#ai-assistant" data-section-id="ai-assistant" class="nav-link text-gray-600 hover:text-green-600 font-semibold transition-colors">Asisten AI</a>
                 <a href="#testimonials" data-section-id="testimonials" class="nav-link text-gray-600 hover:text-green-600 font-semibold transition-colors">Testimoni</a>
                 <a href="#cta" data-section-id="cta" class="nav-link text-gray-600 hover:text-green-600 font-semibold transition-colors">Toko Online</a>
             </nav>
@@ -184,6 +206,7 @@
         <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-200">
              <a href="#features" class="block py-3 px-6 text-base text-gray-700 hover:bg-gray-100">Keunggulan</a>
              <a href="#products" class="block py-3 px-6 text-base text-gray-700 hover:bg-gray-100">Produk</a>
+             <a href="#ai-assistant" class="block py-3 px-6 text-base text-gray-700 hover:bg-gray-100">Asisten AI</a>
              <a href="#testimonials" class="block py-3 px-6 text-base text-gray-700 hover:bg-gray-100">Testimoni</a>
              <a href="#cta" class="block py-3 px-6 text-base text-gray-700 hover:bg-gray-100">Toko Online</a>
              <a href="https://wa.me/6281234567890" target="_blank" class="block py-3 px-6 text-base text-gray-700 hover:bg-gray-100">Hubungi Kami</a>
@@ -240,7 +263,7 @@
                         <!-- Feature 3 -->
                         <div class="scroll-feature-item" data-feature="3">
                              <div class="text-yellow-500 text-4xl mb-4"><i class="fas fa-tags"></i></div>
-                            <h4 class="text-3xl font-bold text-gray-900 mb-3">Harga Paling Kompetitif</h4>
+                            <h4 class="text-3xl font-bold text-gray-900 mb-3">Harga Kompetitif</h4>
                             <p class="text-gray-600 text-lg leading-relaxed">Kualitas premium tidak harus mahal. Kami menawarkan harga terbaik di kelasnya, memberikan Anda nilai lebih untuk setiap pembelian part pengganti.</p>
                         </div>
                     </div>
@@ -289,17 +312,58 @@
             </div>
         </section>
 
+        <!-- Gemini AI Assistant Section -->
+        <section id="ai-assistant" data-section="ai-assistant" class="py-24 md:py-32 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h3 class="text-4xl md:text-5xl font-bold text-gray-900 reveal">Bingung Cari Part? Tanya Asisten AI Kami!</h3>
+                    <p class="text-lg text-gray-600 mt-4 max-w-3xl mx-auto reveal" style="transition-delay: 150ms;">Cukup beri tahu kami model mobil dan masalah Anda, AI kami akan memberikan rekomendasi produk yang tepat.</p>
+                </div>
+                <div class="max-w-2xl mx-auto bg-gray-50 p-8 rounded-2xl border border-gray-200/80 reveal">
+                    <div class="space-y-6">
+                        <div>
+                            <label for="car-model" class="block text-sm font-medium text-gray-700 mb-2">Model Mobil Anda</label>
+                            <input type="text" id="car-model" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-green-500 focus:border-green-500" placeholder="Contoh: Toyota Avanza 2018">
+                        </div>
+                        <div>
+                            <label for="car-problem" class="block text-sm font-medium text-gray-700 mb-2">Jelaskan Masalah Anda</label>
+                            <textarea id="car-problem" rows="4" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-green-500 focus:border-green-500" placeholder="Contoh: Pintu kanan depan bunyi berdecit saat jalan di polisi tidur."></textarea>
+                        </div>
+                        <div class="text-center">
+                            <button id="get-recommendation-btn" class="bg-green-600 text-white font-bold py-3 px-8 rounded-xl text-lg hover:bg-green-700 transition-all duration-300 transform hover:scale-105">
+                                Dapatkan Rekomendasi
+                            </button>
+                        </div>
+                    </div>
+                    <div id="ai-result" class="mt-8 hidden">
+                        <div id="loader-container" class="text-center py-4">
+                            <div class="loader"></div>
+                            <p class="text-gray-600 mt-2">AI sedang menganalisis...</p>
+                        </div>
+                        <div id="result-content" class="hidden bg-green-50 p-6 rounded-xl border border-green-200">
+                             <h4 class="text-xl font-bold text-gray-900 mb-2">Rekomendasi Produk:</h4>
+                             <p id="recommendation-text" class="text-gray-700 whitespace-pre-wrap"></p>
+                        </div>
+                         <div id="error-content" class="hidden bg-red-50 p-6 rounded-xl border border-red-200">
+                             <h4 class="text-xl font-bold text-red-800 mb-2">Oops! Terjadi Kesalahan</h4>
+                             <p id="error-text" class="text-red-700"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- Testimonials Section -->
-        <section id="testimonials" data-section="testimonials" class="py-24 md:py-32 bg-white">
+        <section id="testimonials" data-section="testimonials" class="py-24 md:py-32 bg-gray-50">
             <div class="container mx-auto px-6">
                 <div class="text-center mb-16">
                     <h3 class="text-4xl md:text-5xl font-bold text-gray-900 reveal">Apa Kata Pelanggan Kami</h3>
                     <p class="text-lg text-gray-600 mt-4 max-w-2xl mx-auto reveal" style="transition-delay: 150ms;">Kepuasan Anda adalah prioritas utama kami. Lihat apa yang mereka katakan.</p>
                 </div>
                 <div class="relative">
-                    <div id="testimonial-slider" class="flex overflow-x-auto no-scrollbar space-x-8 transition-all duration-500 select-none" style="scroll-behavior: smooth; scrollbar-width: none; -ms-overflow-style: none;">
+                    <div id="testimonial-slider" class="flex overflow-x-auto cursor-grab no-scrollbar space-x-8 select-none" style="scrollbar-width: none; -ms-overflow-style: none;">
                         <!-- Testimonial 1 -->
-                        <div class="min-w-[350px] max-w-md bg-gray-50 p-8 rounded-2xl reveal card-hover border border-gray-200/80 flex-shrink-0">
+                        <div class="min-w-[350px] max-w-md bg-white p-8 rounded-2xl reveal card-hover border border-gray-200/80 flex-shrink-0">
                             <div class="flex items-center mb-4">
                                 <div class="text-yellow-400">
                                     <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
@@ -315,7 +379,7 @@
                             </div>
                         </div>
                         <!-- Testimonial 2 -->
-                        <div class="min-w-[350px] max-w-md bg-gray-50 p-8 rounded-2xl reveal card-hover border border-gray-200/80 flex-shrink-0">
+                        <div class="min-w-[350px] max-w-md bg-white p-8 rounded-2xl reveal card-hover border border-gray-200/80 flex-shrink-0">
                             <div class="flex items-center mb-4">
                                 <div class="text-yellow-400">
                                     <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
@@ -331,7 +395,7 @@
                             </div>
                         </div>
                         <!-- Testimonial 3 -->
-                        <div class="min-w-[350px] max-w-md bg-gray-50 p-8 rounded-2xl reveal card-hover border border-gray-200/80 flex-shrink-0">
+                        <div class="min-w-[350px] max-w-md bg-white p-8 rounded-2xl reveal card-hover border border-gray-200/80 flex-shrink-0">
                             <div class="flex items-center mb-4">
                                 <div class="text-yellow-400">
                                     <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
@@ -347,7 +411,7 @@
                             </div>
                         </div>
                         <!-- Testimonial 4 -->
-                        <div class="min-w-[350px] max-w-md bg-gray-50 p-8 rounded-2xl reveal card-hover border border-gray-200/80 flex-shrink-0">
+                        <div class="min-w-[350px] max-w-md bg-white p-8 rounded-2xl reveal card-hover border border-gray-200/80 flex-shrink-0">
                             <div class="flex items-center mb-4">
                                 <div class="text-yellow-400">
                                     <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
@@ -363,7 +427,7 @@
                             </div>
                         </div>
                         <!-- Testimonial 5 -->
-                        <div class="min-w-[350px] max-w-md bg-gray-50 p-8 rounded-2xl reveal card-hover border border-gray-200/80 flex-shrink-0">
+                        <div class="min-w-[350px] max-w-md bg-white p-8 rounded-2xl reveal card-hover border border-gray-200/80 flex-shrink-0">
                             <div class="flex items-center mb-4">
                                 <div class="text-yellow-400">
                                     <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
@@ -381,83 +445,10 @@
                     </div>
                 </div>
             </div>
-            <script>
-            // Carousel logic looping, auto-scroll ke kiri, tanpa panah, tanpa scrollbar
-            const slider = document.getElementById('testimonial-slider');
-            let scrollAmount = 0;
-            let cardWidth = 350 + 32; // min-w + space-x
-            let visibleCards = 3;
-            let totalCards = slider.children.length;
-            let maxScroll = cardWidth * (totalCards - visibleCards);
-            function scrollTo(amount) {
-                slider.scrollTo({ left: amount, behavior: 'smooth' });
-            }
-            // Auto scroll looping ke kiri
-            let autoScroll = setInterval(() => {
-                if (scrollAmount > 0) {
-                    scrollAmount -= cardWidth;
-                } else {
-                    scrollAmount = maxScroll;
-                }
-                scrollTo(scrollAmount);
-            }, 4000);
-            // Pause auto scroll on hover
-            slider.onmouseover = () => clearInterval(autoScroll);
-            slider.onmouseout = () => autoScroll = setInterval(() => {
-                if (scrollAmount > 0) {
-                    scrollAmount -= cardWidth;
-                } else {
-                    scrollAmount = maxScroll;
-                }
-                scrollTo(scrollAmount);
-            }, 4000);
-            // Drag to scroll
-            let isDown = false;
-            let startX;
-            let scrollLeft;
-            slider.addEventListener('mousedown', (e) => {
-                isDown = true;
-                slider.classList.add('cursor-grabbing');
-                startX = e.pageX - slider.offsetLeft;
-                scrollLeft = slider.scrollLeft;
-            });
-            slider.addEventListener('mouseleave', () => {
-                isDown = false;
-                slider.classList.remove('cursor-grabbing');
-            });
-            slider.addEventListener('mouseup', () => {
-                isDown = false;
-                slider.classList.remove('cursor-grabbing');
-            });
-            slider.addEventListener('mousemove', (e) => {
-                if (!isDown) return;
-                e.preventDefault();
-                const x = e.pageX - slider.offsetLeft;
-                const walk = (x - startX);
-                slider.scrollLeft = scrollLeft - walk;
-                scrollAmount = slider.scrollLeft;
-            });
-            // Touch support
-            slider.addEventListener('touchstart', (e) => {
-                isDown = true;
-                startX = e.touches[0].pageX - slider.offsetLeft;
-                scrollLeft = slider.scrollLeft;
-            });
-            slider.addEventListener('touchend', () => {
-                isDown = false;
-            });
-            slider.addEventListener('touchmove', (e) => {
-                if (!isDown) return;
-                const x = e.touches[0].pageX - slider.offsetLeft;
-                const walk = (x - startX);
-                slider.scrollLeft = scrollLeft - walk;
-                scrollAmount = slider.scrollLeft;
-            });
-            </script>
         </section>
 
         <!-- CTA Section -->
-        <section id="cta" data-section="cta" class="py-24 md:py-32 bg-gray-50">
+        <section id="cta" data-section="cta" class="py-24 md:py-32 bg-white">
             <div class="container mx-auto px-6 text-center">
                 <h3 class="text-4xl md:text-5xl font-bold text-gray-900 reveal">Siap Untuk Membeli?</h3>
                 <p class="text-lg text-gray-600 mt-4 mb-10 max-w-2xl mx-auto reveal" style="transition-delay: 150ms;">Kunjungi toko kami di marketplace favorit Anda untuk belanja yang mudah, aman, dan cepat.</p>
@@ -471,10 +462,10 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-white border-t border-gray-200">
+    <footer class="bg-gray-100 border-t border-gray-200">
         <div class="container mx-auto px-6 py-10 text-center">
             <div class="flex justify-center items-center space-x-3 mb-4">
-                 <img src="assets/Puka Logo.png" alt="Puka Logo" class="h-16">
+                 <img src="assets/Puka Logo.png" alt="Puka Logo" class="h-20">
                  <h1 class="text-xl font-bold text-gray-800">Puka Mobil</h1>
             </div>
             <div class="flex justify-center space-x-6 mb-6">
@@ -581,15 +572,202 @@
             if (window.innerWidth < 768) {
                 featureItems.forEach(item => item.classList.add('active'));
                  Object.values(featureImages).forEach(img => {
-                    img.style.position = 'relative';
-                    img.style.opacity = '1';
-                    img.style.transform = 'scale(1)';
-                    img.classList.remove('feature-image');
+                     img.style.position = 'relative';
+                     img.style.opacity = '1';
+                     img.style.transform = 'scale(1)';
+                     img.classList.remove('feature-image');
                  });
                  document.querySelector('.md\\:sticky').style.display = 'none';
             } else {
                  featureItems.forEach(item => featureObserver.observe(item));
             }
+            
+            // --- Testimonial Slider Logic ---
+            const slider = document.getElementById('testimonial-slider');
+            if (slider) {
+                // Clone testimonial cards for infinite loop effect
+                const originalCards = Array.from(slider.children);
+                originalCards.forEach(card => {
+                    const clone = card.cloneNode(true);
+                    clone.classList.remove('reveal'); // remove reveal class from clones
+                    slider.appendChild(clone);
+                });
+
+                let scrollAnimation;
+                const scrollSpeed = 0.7; // Adjust for faster/slower scroll
+
+                const startContinuousScroll = () => {
+                    const scroll = () => {
+                        slider.scrollLeft += scrollSpeed;
+                        // When the first set of items has been scrolled past, reset to the beginning
+                        if (slider.scrollLeft >= slider.scrollWidth / 2) {
+                            slider.scrollLeft = 0;
+                        }
+                        scrollAnimation = requestAnimationFrame(scroll);
+                    };
+                    scrollAnimation = requestAnimationFrame(scroll);
+                };
+
+                const stopContinuousScroll = () => {
+                    cancelAnimationFrame(scrollAnimation);
+                };
+
+                startContinuousScroll();
+
+                // Pause on hover
+                slider.addEventListener('mouseenter', stopContinuousScroll);
+                slider.addEventListener('mouseleave', startContinuousScroll);
+
+                // Manual drag-to-scroll logic (also pauses animation)
+                let isDown = false;
+                let startX;
+                let scrollLeft;
+
+                slider.addEventListener('mousedown', (e) => {
+                    isDown = true;
+                    slider.classList.add('cursor-grabbing');
+                    startX = e.pageX - slider.offsetLeft;
+                    scrollLeft = slider.scrollLeft;
+                    stopContinuousScroll(); // Stop autoscroll on drag
+                });
+                
+                // Also stop on mouseup and restart if mouse is not over slider
+                slider.addEventListener('mouseup', () => {
+                    isDown = false;
+                    slider.classList.remove('cursor-grabbing');
+                });
+
+                slider.addEventListener('mousemove', (e) => {
+                    if (!isDown) return;
+                    e.preventDefault();
+                    const x = e.pageX - slider.offsetLeft;
+                    const walk = (x - startX) * 2; // Multiply for faster drag
+                    slider.scrollLeft = scrollLeft - walk;
+                });
+
+                // Touch support for manual scroll
+                slider.addEventListener('touchstart', (e) => {
+                    isDown = true;
+                    startX = e.touches[0].pageX - slider.offsetLeft;
+                    scrollLeft = slider.scrollLeft;
+                    stopContinuousScroll();
+                });
+                slider.addEventListener('touchend', () => {
+                    isDown = false;
+                    // No need to restart here, mouseleave/mouseenter will handle it
+                });
+                slider.addEventListener('touchmove', (e) => {
+                    if (!isDown) return;
+                    const x = e.touches[0].pageX - slider.offsetLeft;
+                    const walk = (x - startX) * 2;
+                    slider.scrollLeft = scrollLeft - walk;
+                });
+            }
+
+            // --- Gemini AI Assistant Logic ---
+            const getRecommendationBtn = document.getElementById('get-recommendation-btn');
+            const carModelInput = document.getElementById('car-model');
+            const carProblemInput = document.getElementById('car-problem');
+            const aiResultContainer = document.getElementById('ai-result');
+            const loaderContainer = document.getElementById('loader-container');
+            const resultContent = document.getElementById('result-content');
+            const recommendationText = document.getElementById('recommendation-text');
+            const errorContent = document.getElementById('error-content');
+            const errorText = document.getElementById('error-text');
+
+            getRecommendationBtn.addEventListener('click', async () => {
+                const carModel = carModelInput.value;
+                const carProblem = carProblemInput.value;
+
+                if (!carModel || !carProblem) {
+                    alert('Mohon isi model mobil dan jelaskan masalah Anda.');
+                    return;
+                }
+
+                // Show loader and hide previous results
+                aiResultContainer.classList.remove('hidden');
+                loaderContainer.classList.remove('hidden');
+                resultContent.classList.add('hidden');
+                errorContent.classList.add('hidden');
+
+                // System prompt for the AI model
+                const systemPrompt = `Anda adalah seorang mekanik ahli di Puka Mobil, sebuah toko spesialis karet otomotif. Tugas Anda adalah membantu pelanggan menemukan produk yang tepat berdasarkan masalah mobil mereka.
+                
+                Anda hanya boleh merekomendasikan salah satu dari empat kategori produk berikut:
+                1.  'Karet Pintu & Kaca': Untuk masalah terkait suara angin, kebocoran air dari pintu/kaca, atau pintu yang tidak rapat.
+                2.  'Karpet Karet Mobil': Untuk kebutuhan alas lantai mobil atau pelindung lumpur (karpet roda).
+                3.  'Klip & Kancingan': Untuk panel interior (doortrim), plafon, atau bagian lain yang longgar dan membutuhkan pengait.
+                4.  'Karet Kedap Spon': Untuk peredaman getaran, suara, atau sebagai seal serbaguna.
+                
+                Analisis keluhan pelanggan dan berikan satu rekomendasi kategori produk yang paling relevan.
+                
+                Format jawaban Anda HARUS seperti ini, dan tidak boleh ada teks lain:
+                Rekomendasi Produk: [Nama Kategori]
+                
+                Penjelasan: [Penjelasan singkat dan jelas mengapa produk tersebut direkomendasikan untuk masalah pelanggan]`;
+
+                const userQuery = `Pelanggan memiliki mobil ${carModel} dan mengeluhkan: "${carProblem}"`;
+                
+                try {
+                    const recommendation = await callGeminiApi(systemPrompt, userQuery);
+                    
+                    recommendationText.innerText = recommendation;
+                    loaderContainer.classList.add('hidden');
+                    resultContent.classList.remove('hidden');
+                } catch (error) {
+                    console.error("Error calling Gemini API:", error);
+                    errorText.innerText = "Maaf, terjadi masalah saat menghubungi asisten AI. Silakan coba lagi nanti.";
+                    loaderContainer.classList.add('hidden');
+                    errorContent.classList.remove('hidden');
+                }
+            });
+
+            async function callGeminiApi(systemPrompt, userQuery, retries = 3, delay = 1000) {
+                // IMPORTANT: Leave apiKey as an empty string. The execution environment will handle it.
+                const apiKey = "AIzaSyCi207kNn2m--7TQ-vrIm5m-OcjWb50GeU"; 
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+
+                const payload = {
+                    contents: [{ parts: [{ text: userQuery }] }],
+                    systemInstruction: {
+                        parts: [{ text: systemPrompt }]
+                    },
+                };
+
+                try {
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (!response.ok) {
+                        // Handle non-2xx responses
+                        if (response.status === 429 && retries > 0) { // Throttling
+                            await new Promise(resolve => setTimeout(resolve, delay));
+                            return callGeminiApi(systemPrompt, userQuery, retries - 1, delay * 2); // Exponential backoff
+                        }
+                        const errorBody = await response.json();
+                        throw new Error(`API Error: ${response.status} ${response.statusText} - ${JSON.stringify(errorBody)}`);
+                    }
+
+                    const result = await response.json();
+                    
+                    if (result.candidates && result.candidates.length > 0 && result.candidates[0].content?.parts?.[0]?.text) {
+                        return result.candidates[0].content.parts[0].text;
+                    } else {
+                        // Handle cases where the response structure is unexpected
+                        throw new Error("Respons tidak valid dari API. Coba lagi.");
+                    }
+                } catch (error) {
+                    if (retries > 0) {
+                        await new Promise(resolve => setTimeout(resolve, delay));
+                        return callGeminiApi(systemPrompt, userQuery, retries - 1, delay * 2);
+                    }
+                    throw error; // Rethrow the final error after all retries
+                }
+            }
+
 
             // --- Hero Canvas Animation ---
             const canvas = document.getElementById('hero-canvas');
